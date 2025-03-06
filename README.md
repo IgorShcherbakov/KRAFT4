@@ -139,11 +139,23 @@ kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic balanced_to
 # Задание 2. Настройка защищённого соединения и управление доступом
 
 ## Подготовка данных
-1. Выполните команду:
+1. Создать виртуальное окружение
+```bash
+python -m venv venv
+```
+2. Активировать виртуальное окружение
+```bash
+venv\Scripts\Activate.ps1
+```
+3. Установить зависимости
+```bash
+pip install -r requirements.txt
+```
+4. Выполните команду:
 ```bash
 docker compose -f docker-compose-zoo.yml up -d
 ```
-2. Для просмотра запущенных контейнеров в Docker выполните команду:
+5. Для просмотра запущенных контейнеров в Docker выполните команду:
 ```bash
 docker ps
 ```
