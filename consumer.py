@@ -11,13 +11,18 @@ if __name__ == "__main__":
         "group.id": "consumer-ssl-group",
         "auto.offset.reset": "earliest",
 
-        "security.protocol": "SSL", 
+        "security.protocol": "SASL_SSL", 
         "ssl.ca.location": "ca.crt",  # Сертификат центра сертификации
         "ssl.certificate.location": "kafka-1-creds/kafka-1.crt",  # Сертификат клиента Kafka
         "ssl.key.location": "kafka-1-creds/kafka-1.key",  # Приватный ключ для клиента Kafka
+
+        # Настройки SASL-аутентификации
+       "sasl.mechanism": "PLAIN",  # Используемый механизм SASL (PLAIN)
+       "sasl.username": "admin",  # Имя пользователя для аутентификации
+       "sasl.password": "admin-secret",  # Пароль пользователя для аутентификации
     }
     consumer = Consumer(consumer_conf)
-    consumer.subscribe(["ssl-topic"])
+    consumer.subscribe(["sasl-plain-topic"])
 
     try:
         while True:
