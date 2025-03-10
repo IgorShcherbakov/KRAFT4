@@ -37,6 +37,7 @@ kafka-topics.sh --bootstrap-server localhost:9092 --topic balanced_topic --creat
 kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic balanced_topic
 ```
 Результатом выполнения команды будет детальная информация о топике balanced_topic, включая его настройки, количество партиций, репликацию и другие параметры:
+
 ![alt text](resources/describe_topic.png)
 
 3. Создайте JSON-файл reassignment.json для перераспределения партиций.
@@ -49,6 +50,7 @@ cd /tmp
 pwd
 ```
 Результат команды:
+
 ![alt text](resources/pwd.png)
 
 В терминале контейнера выполнить команду:
@@ -68,6 +70,7 @@ echo '{
 }' > reassignment.json
 ```
 Результат команды:
+
 ![alt text](resources/reassignment.png)
 
 4. Перераспределите партиции.
@@ -80,6 +83,7 @@ kafka-reassign-partitions.sh \
 --generate
 ```
 Результат команды:
+
 ![alt text](resources/kafka_reassign_partitions.png)
 
 В терминале контейнера выполнить команду:
@@ -87,6 +91,7 @@ kafka-reassign-partitions.sh \
 kafka-reassign-partitions.sh --bootstrap-server localhost:9092 --reassignment-json-file /tmp/reassignment.json --execute
 ```
 Результат команды:
+
 ![alt text](resources/execute.png)
 
 5. Проверьте статус перераспределения.
@@ -107,6 +112,7 @@ kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic balanced_to
 docker stop kafka-1
 ```
 Результат команды:
+
 ![alt text](resources/docker_stop_kafka_1.png)
 
 
@@ -116,6 +122,7 @@ docker stop kafka-1
 kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic balanced_topic
 ```
 Результат команды:
+
 ![alt text](resources/describe_topic_after_down.png)
 
 7.3. Запустите брокер заново.
@@ -124,6 +131,7 @@ kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic balanced_to
 docker start kafka-1
 ```
 Результат команды:
+
 ![alt text](resources/docker_start_kafka_1.png)
 
 7.4. Проверьте, восстановилась ли синхронизация реплик.
@@ -132,6 +140,7 @@ docker start kafka-1
 kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic balanced_topic
 ```
 Результат команды:
+
 ![alt text](resources/describe_topic_after_recovery.png)
 
 Вывод: после моделирования сбоя и восстановления брокера видим что была восстановлена синхронизация реплик, но упавший брокер был исключен из лидерства.
@@ -232,7 +241,7 @@ kafka-acls --bootstrap-server kafka-0:9010  \
 ![alt text](resources/consumer_access_terminal.png)
 ![alt text](resources/consumer_access_ui.png)
 
-# дать консьюмеру доступ к группе консьюмеров
+Дать консьюмеру доступ к группе консьюмеров:
 ```bash
 kafka-acls --bootstrap-server kafka-0:9010 \
 --command-config /etc/kafka/secrets/adminclient-configs.conf \
