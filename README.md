@@ -170,17 +170,17 @@ docker ps
 
 1. Подключиться к брокеру и создать топики:
 
-# команда для создания топика topic-1
+Команда для создания топика topic-1:
 ```bash
 kafka-topics --create --topic topic-1 --bootstrap-server kafka-0:9010 --partitions 3 --replication-factor 2 --command-config /etc/kafka/secrets/adminclient-configs.conf
 ```
 
-# команда для создания топика topic-2
+Команда для создания топика topic-2:
 ```bash
 kafka-topics --create --topic topic-2 --bootstrap-server kafka-0:9010 --partitions 3 --replication-factor 2 --command-config /etc/kafka/secrets/adminclient-configs.conf
 ```
 
-# команда для создания топика topic-3
+Команда для создания топика topic-3:
 ```bash
 kafka-topics --create --topic topic-3 --bootstrap-server kafka-0:9010 --partitions 3 --replication-factor 2 --command-config /etc/kafka/secrets/adminclient-configs.conf
 ```
@@ -192,7 +192,7 @@ kafka-topics --create --topic topic-3 --bootstrap-server kafka-0:9010 --partitio
 
 2. Подключиться к брокеру и назначить права:
 
-# дать продюсеру права на запись в топик topic-1
+Дать продюсеру права на запись в топик topic-1:
 ```bash
 kafka-acls --bootstrap-server kafka-0:9010  \
 --command-config /etc/kafka/secrets/adminclient-configs.conf \
@@ -202,7 +202,7 @@ kafka-acls --bootstrap-server kafka-0:9010  \
 --topic topic-1 
 ```
 
-# дать продюсеру права на запись в топик topic-2
+Дать продюсеру права на запись в топик topic-2:
 ```bash
 kafka-acls --bootstrap-server kafka-0:9010  \
 --command-config /etc/kafka/secrets/adminclient-configs.conf \
@@ -217,7 +217,7 @@ kafka-acls --bootstrap-server kafka-0:9010  \
 ![alt text](resources/producer_access_terminal.png)
 ![alt text](resources/producer_access_ui.png)
 
-# дать консьюмеру права на чтение топика topic-1
+Дать консьюмеру права на чтение топика topic-1:
 ```bash
 kafka-acls --bootstrap-server kafka-0:9010  \
 --command-config /etc/kafka/secrets/adminclient-configs.conf \
@@ -250,6 +250,7 @@ kafka-acls --bootstrap-server kafka-0:9010 \
 3. Запустим продюсер (producer.py)
 
 Результат:
+
 ![alt text](resources/producer_result_terminal.png)
 ![alt text](resources/produser_result_ui.png)
 
