@@ -106,3 +106,30 @@ openssl s_client -connect localhost:9095 -CAfile ca.crt
 1.13. Поднять/положить сборку
 docker compose -f docker-compose-zoo.yml down -v
 docker compose -f docker-compose-zoo.yml up -d
+
+bin/kafka-acls.sh --authorizer-properties zookeeper.connect=localhost:2181 --add --allow-principal User:newuser --operation Read --topic your_topic_name
+
+bin/kafka-acls.sh --authorizer-properties zookeeper.connect=localhost:2181 --list --topic your_topic_name
+
+docker compose up
+docker exec -it f770134fde93 bash
+
+
+kafka-acls --bootstrap-server kafka-1:9092  \
+--add   --allow-principal User:producer \
+--allow-principal User:producer  \
+--operation read \
+--topic topic-1
+
+kafka-acls --authorizer-properties zookeeper.connect=zookeeper:2181 --list --topic topic-1
+
+# дать все права на кластер
+docker exec -it kafka-0 kafka-acls --bootstrap-server kafka-0:9090 
+--command-config /tmp/adminclient-configs.conf \
+--add --allow-principal User:admin --operation All --cluster
+
+KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+KAFKA_SUPER_USERS: User:admin
+KAFKA_INTER_BROKER_LISTENER_NAME: SSL
+     KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+     KAFKA_ZOOKEEPER_SET_ACL: 'true'
