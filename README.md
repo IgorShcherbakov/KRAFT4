@@ -169,9 +169,9 @@ docker ps
 1. Подключиться к брокеру и создать топики:
 ```bash
 # команда для создания топика topic-1
-kafka-topics.sh --create --topic topic-1 --bootstrap-server localhost:9092 --partitions 3 --replication-factor 2
+kafka-topics --create --topic topic-1 --bootstrap-server kafka-1:9092 --partitions 3 --replication-factor 2
 # команда для создания топика topic-2
-kafka-topics.sh --create --topic topic-2 --bootstrap-server localhost:9092 --partitions 3 --replication-factor 2
+kafka-topics --create --topic topic-2 --bootstrap-server kafka-1:9092 --partitions 3 --replication-factor 2
 ```
 
 2. Запустим продюсер
