@@ -112,16 +112,16 @@ bin/kafka-acls.sh --authorizer-properties zookeeper.connect=localhost:2181 --add
 bin/kafka-acls.sh --authorizer-properties zookeeper.connect=localhost:2181 --list --topic your_topic_name
 
 docker compose up
-docker exec -it f770134fde93 bash
+docker exec -it 46d9a3347838 bash
 
-
-kafka-acls --bootstrap-server kafka-1:9092  \
---add   --allow-principal User:producer \
---allow-principal User:producer  \
+```bash
+kafka-acls --bootstrap-server kafka-0:9010 \
+--command-config /etc/kafka/secrets/adminclient-configs.conf \
+--remove \
+--allow-principal User:producer \
 --operation read \
 --topic topic-1
-
-kafka-acls --authorizer-properties zookeeper.connect=zookeeper:2181 --list --topic topic-1
+```
 
 # дать все права на кластер
 docker exec -it kafka-0 kafka-acls --bootstrap-server kafka-0:9090 
@@ -133,3 +133,5 @@ KAFKA_SUPER_USERS: User:admin
 KAFKA_INTER_BROKER_LISTENER_NAME: SSL
      KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
      KAFKA_ZOOKEEPER_SET_ACL: 'true'
+
+kafka-topics --create --topic topic-1 --bootstrap-server kafka-2:9094 --partitions 3 --replication-factor 2

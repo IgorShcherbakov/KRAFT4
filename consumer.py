@@ -18,11 +18,11 @@ if __name__ == "__main__":
 
         # Настройки SASL-аутентификации
        "sasl.mechanism": "PLAIN",  # Используемый механизм SASL (PLAIN)
-       "sasl.username": "admin",  # Имя пользователя для аутентификации
-       "sasl.password": "admin-secret",  # Пароль пользователя для аутентификации
+       "sasl.username": "consumer",  # Имя пользователя для аутентификации
+       "sasl.password": "consumer",  # Пароль пользователя для аутентификации
     }
     consumer = Consumer(consumer_conf)
-    consumer.subscribe(["sasl-plain-topic"])
+    consumer.subscribe(["topic-1", "topic-2"])
 
     try:
         while True:
@@ -31,11 +31,11 @@ if __name__ == "__main__":
             if message is None:
                 continue
             if message.error():
-                logger.error(f"Ошибка: {message.error()}")
+                logger.error(f"Ошибка топика {message.topic()}: {message.error()}")
                 continue
 
             key = message.key().decode("utf-8")
             value = message.value().decode("utf-8")
-            logger.info(f"Получено сообщение: {key=}, {value=}, offset={message.offset()}")
+            logger.info(f"Получено сообщение из топика {message.topic()}: {key=}, {value=}, offset={message.offset()}")
     finally:
         consumer.close()
