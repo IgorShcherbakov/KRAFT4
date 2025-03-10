@@ -60,8 +60,10 @@ services:
      KAFKA_ZOOKEEPER_SASL_CLIENT: true
      KAFKA_OPTS: "-Djava.security.auth.login.config=/etc/kafka/secrets/kafka-0.sasl.jaas.conf"
      KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: "HTTPS"
-     #KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
-     #KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+     KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+     KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+     KAFKA_SUPER_USERS: User:admin
+     KAFKA_HEAP_OPTS: "-Xmx512M -Xms256M"
 
  kafka-1:
    image: confluentinc/cp-kafka:7.4.4
@@ -100,8 +102,10 @@ services:
      KAFKA_ZOOKEEPER_SASL_CLIENT: true
      KAFKA_OPTS: "-Djava.security.auth.login.config=/etc/kafka/secrets/kafka-1.sasl.jaas.conf"
      KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: "HTTPS"
-     #KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
-     #KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+     KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+     KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+     KAFKA_SUPER_USERS: User:admin
+     KAFKA_HEAP_OPTS: "-Xmx512M -Xms256M"
 
  kafka-2:
    image: confluentinc/cp-kafka:7.4.4
@@ -140,8 +144,10 @@ services:
      KAFKA_ZOOKEEPER_SASL_CLIENT: true
      KAFKA_OPTS: "-Djava.security.auth.login.config=/etc/kafka/secrets/kafka-2.sasl.jaas.conf"
      KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: "HTTPS"
-     #KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
-     #KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+     KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+     KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+     KAFKA_SUPER_USERS: User:admin
+     KAFKA_HEAP_OPTS: "-Xmx512M -Xms256M"
 
  kafka-ui:
     image: provectuslabs/kafka-ui:latest

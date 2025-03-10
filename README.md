@@ -161,19 +161,104 @@ docker ps
 ```
 Эта команда отобразит список всех активных контейнеров, включая их идентификаторы, имена, статус, порты и другие важные параметры.
 
-## Решение
+## Задача
 Создать два топика и настроить права доступа:
 - topic-1 (доступен как для продюсеров, так и для консьюмеров)
 - topic-2 (продюсеры могут отправлять сообщения, консьюмеры не имеют доступа к чтению данных)
 
+## Решение
+
 1. Подключиться к брокеру и создать топики:
-```bash
+
 # команда для создания топика topic-1
-kafka-topics --create --topic topic-1 --bootstrap-server kafka-1:9092 --partitions 3 --replication-factor 2
-# команда для создания топика topic-2
-kafka-topics --create --topic topic-2 --bootstrap-server kafka-1:9092 --partitions 3 --replication-factor 2
+```bash
+kafka-topics --create --topic topic-1 --bootstrap-server kafka-0:9010 --partitions 3 --replication-factor 2 --command-config /etc/kafka/secrets/adminclient-configs.conf
 ```
 
-2. Запустим продюсер
+# команда для создания топика topic-2
+```bash
+kafka-topics --create --topic topic-2 --bootstrap-server kafka-0:9010 --partitions 3 --replication-factor 2 --command-config /etc/kafka/secrets/adminclient-configs.conf
+```
 
-3. Запустим консьюмер
+# команда для создания топика topic-3
+```bash
+kafka-topics --create --topic topic-3 --bootstrap-server kafka-0:9010 --partitions 3 --replication-factor 2 --command-config /etc/kafka/secrets/adminclient-configs.conf
+```
+
+Результат:
+
+![alt text](resources/acl_create_topic.png)
+![alt text](resources/acl_ui_create_topic.png)
+
+2. Подключиться к брокеру и назначить права:
+
+# дать продюсеру права на запись в топик topic-1
+```bash
+kafka-acls --bootstrap-server kafka-0:9010  \
+--command-config /etc/kafka/secrets/adminclient-configs.conf \
+--add   --allow-principal User:producer \
+--allow-principal User:producer  \
+--operation write \
+--topic topic-1 
+```
+
+# дать продюсеру права на запись в топик topic-2
+```bash
+kafka-acls --bootstrap-server kafka-0:9010  \
+--command-config /etc/kafka/secrets/adminclient-configs.conf \
+--add   --allow-principal User:producer \
+--allow-principal User:producer  \
+--operation write \
+--topic topic-2 
+```
+
+Результат:
+
+![alt text](resources/producer_access_terminal.png)
+![alt text](resources/producer_access_ui.png)
+
+# дать консьюмеру права на чтение топика topic-1
+```bash
+kafka-acls --bootstrap-server kafka-0:9010  \
+--command-config /etc/kafka/secrets/adminclient-configs.conf \
+--add   --allow-principal User:consumer \
+--allow-principal User:consumer  \
+--operation read \
+--topic topic-1 
+```
+
+Результат:
+
+![alt text](resources/consumer_access_terminal.png)
+![alt text](resources/consumer_access_ui.png)
+
+# дать консьюмеру доступ к группе консьюмеров
+```bash
+kafka-acls --bootstrap-server kafka-0:9010 \
+--command-config /etc/kafka/secrets/adminclient-configs.conf \
+--add --allow-principal User:consumer \
+--operation Read \
+--group consumer-ssl-group
+```
+
+Результат:
+
+![alt text](resources/consumer_group_terminal.png)
+![alt text](resources/consumer_group_ui.png)
+
+
+3. Запустим продюсер (producer.py)
+
+Результат:
+![alt text](resources/producer_result_terminal.png)
+![alt text](resources/produser_result_ui.png)
+
+4. Запустим консьюмер (consumer.py)
+
+Результат:
+
+![alt text](resources/consumer_result_terminal.png)
+
+Вывод: 
+1. после запуска продюсера видим что сообщения отправлены только в topic-1 и topic-2 (как мы и хотели), а отправка сообщения в topic-3 закончилась ошибкой.
+2. после запуска консьюмера видим сообщения из topic-1, а так же ошибку topic-2 (так как доступ к нему мы не настраивали)
